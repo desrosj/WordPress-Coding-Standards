@@ -7,9 +7,6 @@ on:
       - develop
   pull_request:
 
-env:
-  XMLLINT_INDENT: '	'
-
 jobs:
 
   sniff:
@@ -62,16 +59,16 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-suggest
 
-      - name: Check WordPress-Core rulesest
+      - name: Check the WordPress-Core rulesest
         run: $(pwd)/vendor/bin/phpcs -ps ./Tests/RulesetCheck/class-ruleset-test.inc --standard=WordPress-Core
 
-      - name: Check WordPress-Docs ruleset
+      - name: Check the WordPress-Docs ruleset
         run: $(pwd)/vendor/bin/phpcs -ps ./Tests/RulesetCheck/class-ruleset-test.inc --standard=WordPress-Docs
 
-      - name: Check WordPress-Extra ruleset
+      - name: Check the WordPress-Extra ruleset
         run: $(pwd)/vendor/bin/phpcs -ps ./Tests/RulesetCheck/class-ruleset-test.inc --standard=WordPress-Extra
 
-      - name: Check WordPress ruleset
+      - name: Check the WordPress ruleset
         run: $(pwd)/vendor/bin/phpcs -ps ./Tests/RulesetCheck/class-ruleset-test.inc --standard=WordPress
 
       # Test for fixer conflicts by running the auto-fixers of the complete WPCS over the test case files.
