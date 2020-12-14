@@ -7,6 +7,9 @@ on:
       - develop
   pull_request:
 
+env:
+  XMLLINT_INDENT: '	'
+
 jobs:
   # Performs some quick tests.
   # This is a much quicker test suite which only runs the unit tests and linting
@@ -27,15 +30,19 @@ jobs:
       matrix:
         php: [ '7.4', '5.4' ]
         phpcs_branch: [ 'dev-master' ]
+        lint: [ true ]
         include:
           - php: '7.3'
             phpcs_branch: '3.5.0'
+            lint: false
           - php: '5.4'
             phpcs_branch: '3.5.0'
+            lint: false
 
     env:
       PHP_VERSION: ${{ matrix.php }}
       PHPCS_BRANCH: ${{ matrix.phpcs_branch }}
+      LINT: ${{ matrix.lint }}
 
     steps:
       - name: Checkout repository
@@ -77,7 +84,7 @@ jobs:
         run: composer install --no-suggest
 
       - name: Lint PHP files against parse errors.
-        if: ${{ matrix.phpcs_branch == 'dev-master' }}
+        if: ${{ matrix.lint }}
         run: composer lint
 
       - name: Run unit tests
