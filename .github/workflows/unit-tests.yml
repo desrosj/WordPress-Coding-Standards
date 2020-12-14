@@ -48,9 +48,6 @@ jobs:
           - php: '8.1'
             phpcs_branch: '3.5.7'
             allowed_failure: true
-    env:
-      PHP_VERSION: ${{ matrix.php }}
-      PHPCS_BRANCH: ${{ matrix.phpcs_branch }}
 
     steps:
       - name: Checkout repository
@@ -72,18 +69,18 @@ jobs:
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
-        if: ${{ env.PHPCS_BRANCH == 'dev-master' }}
+        if: ${{ matrix.phpcs_branch == 'dev-master' }}
         with:
-          php-version: ${{ env.PHP_VERSION }}
+          php-version: ${{ matrix.php }}
 
       # On stable PHPCS versions, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
-        if: ${{ env.PHPCS_BRANCH != 'dev-master' }}
+        if: ${{ matrix.phpcs_branch != 'dev-master' }}
         with:
-          php-version: ${{ env.PHP_VERSION }}
-          ini-values: error_reporting=E_ALL & ~E_DEPRECATED
+          php-version: ${{ matrix.php }}
+          ini-values: error_reporting = E_ALL & ~E_DEPRECATED
 
       # Set Composer up to download only PHPCS from source for PHPCS 4.x.
       # The source is needed to get the base testcase from PHPCS.
@@ -93,7 +90,7 @@ jobs:
         run: composer config preferred-install.squizlabs/php_codesniffer source
 
       - name: Install PHPCS
-        run: composer require squizlabs/php_codesniffer:"${{ env.PHPCS_BRANCH }}" --no-update --no-suggest --no-scripts
+        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_branch }}" --no-update --no-suggest --no-scripts
 
       - name: Install composer dependencies (PHP >= 8.0)
         if: ${{ matrix.php >= 8.0 }}
