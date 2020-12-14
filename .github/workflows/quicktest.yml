@@ -67,8 +67,8 @@ jobs:
           ini-values: error_reporting=E_ALL & ~E_DEPRECATED
 
       - name: Test PHP
-        run: php "phpinfo();"
-        
+        run: php -r "phpinfo();"
+
       - name: Install PHPCS
         run: composer require squizlabs/php_codesniffer:"${{ env.PHPCS_BRANCH }}" --no-update --no-suggest --no-scripts
 
