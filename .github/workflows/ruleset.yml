@@ -46,12 +46,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
-          # On stable PHPCS versions, allow for PHP deprecation notices.
-          # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-          ini-values: error_reporting=E_ALL & ~E_DEPRECATED
 
-      - name: Install xmllint
-        run: sudo apt-get install libxml2-utils
+      # On stable PHPCS versions, allow for PHP deprecation notices.
+      # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+      - name: Configure error reporting
+        if: ${{ matrix.PHPCS_BRANCH == 'dev-master' }}
+        run: echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> /etc/php/${{ matrix.PHP_VERSION }}/cli/php.ini
 
       - name: Setup PHPCS
         run: composer config preferred-install.squizlabs/php_codesniffer auto
