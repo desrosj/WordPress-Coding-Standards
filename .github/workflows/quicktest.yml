@@ -1,10 +1,6 @@
 name: Quick Tests
 
 on:
-  push:
-    branches-ignore:
-      - master
-      - develop
   workflow_run:
     workflows:
       - Ruleset checks
