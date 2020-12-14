@@ -1,10 +1,14 @@
 name: Quick Test
 
 on:
-  workflow_run:
-    workflows: [ "Ruleset checks" ]
-    types:
-      - completed
+  push:
+    branches-ignore:
+      - master
+      - develop
+  pull_request:
+
+env:
+  XMLLINT_INDENT: '	'
 
 jobs:
 
@@ -15,21 +19,18 @@ jobs:
       matrix:
         php: [ '7.4', '7.3', '5.4' ]
         phpcs_branch: [ 'dev-master', '3.5.0' ]
-        lint: [ '1' ]
+        lint: [ 0 ]
         include:
-          - php: '7.3'
-            phpcs_branch: '3.5.0'
-            lint: 0
+          - php: '7.4'
+            phpcs_branch: 'dev-master'
+            lint: 1
           - php: '5.4'
-            phpcs_branch: '3.5.0'
-            lint: 0
+            phpcs_branch: 'dev-master'
+            lint: 1
         exclude:
           - php: '7.3'
-            phpcs_branch: '3.5.0'
-            lint: 1
-          - php: '7.3'
-            phpcs_branch: '3.5.0'
-            lint: 1
+            phpcs_branch: 'dev-master'
+            lint: 0
 
     env:
       PHP_VERSION: ${{ matrix.php }}
@@ -58,15 +59,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
-          # On stable PHPCS versions, allow for PHP deprecation notices.
-          # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-          ini-values: error_reporting=E_ALL & ~E_DEPRECATED
 
-      - name: Install xmllint
-        run: sudo apt-get install libxml2-utils
-
-      - name: Setup PHPCS
-        run: composer config preferred-install.squizlabs/php_codesniffer auto
+      # On stable PHPCS versions, allow for PHP deprecation notices.
+      # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+      - name: Configure error reporting
+        if: ${{ matrix.PHPCS_BRANCH == 'dev-master' }}
+        run: echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> /etc/php/${{ env.PHP_VERSION }}/cli/php.ini
 
       - name: Install PHPCS
         run: composer require squizlabs/php_codesniffer:"${{ env.PHPCS_BRANCH }}" --no-update --no-suggest --no-scripts
