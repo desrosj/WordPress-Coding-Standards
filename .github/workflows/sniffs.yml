@@ -40,6 +40,9 @@ jobs:
         with:
           php-version: '7.4'
 
+      - name: Install xmllint
+        run: sudo apt-get install libxml2-utils
+
       - name: Setup PHPCS
         run: composer config preferred-install.squizlabs/php_codesniffer auto
 
@@ -55,25 +58,12 @@ jobs:
       - name: Configure runtime.
         run: $(pwd)/vendor/bin/phpcs --runtime-set ignore_warnings_on_exit 1
 
-
-      - name: Lint info.xml
-        uses: ChristophWurst/xmllint-action@v1
-        with:
-          xml-file: ./phpcs.xml.dist.sample
-          xml-schema-file: ./vendor/squizlabs/php_codesniffer/phpcs.xsd
-
-      - name: Lint rulsests 2
-        uses: ChristophWurst/xmllint-action@v1
-        with:
-          xml-file: ./*/ruleset.xml
-          xml-schema-file: ./vendor/squizlabs/php_codesniffer/phpcs.xsd
-
       # @link http://xmlsoft.org/xmllint.html
       # For the build to properly error when validating against a scheme, these each have to be in their own condition.
-#      - name: Validate the xml files.
-#        run: |
-#          xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./*/ruleset.xml
-#          xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./phpcs.xml.dist.sample
+      - name: Validate the xml files.
+        run: |
+          xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./*/ruleset.xml
+          xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./phpcs.xml.dist.sample
 
       - name: Check the code-style consistency of the xml files.
         run: |
