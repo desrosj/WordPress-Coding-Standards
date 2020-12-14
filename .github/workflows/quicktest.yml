@@ -57,7 +57,7 @@ jobs:
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
-        if: ${{ env.PHPCS_BRANCH != 'dev-master' }}
+        if: ${{ env.PHPCS_BRANCH == 'dev-master' }}
         with:
           php-version: ${{ env.PHP_VERSION }}
 
@@ -65,7 +65,7 @@ jobs:
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
-        if: ${{ env.PHPCS_BRANCH == 'dev-master' }}
+        if: ${{ env.PHPCS_BRANCH != 'dev-master' }}
         with:
           php-version: ${{ env.PHP_VERSION }}
           ini-values: error_reporting=E_ALL & ~E_DEPRECATED
@@ -76,7 +76,7 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-suggest
 
-      - name: Lint PHP files against parse errors.
+      - name: Lint PHP files against parse errors
         if: ${{ matrix.phpcs_branch == 'dev-master' }}
         run: composer lint
 
