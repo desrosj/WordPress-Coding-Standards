@@ -73,7 +73,7 @@ jobs:
         run: composer install --no-suggest
 
       - name: Lint PHP files against parse errors.
-        if: ${{ env.LINT }}
+        if: ${{ matrix.lint }}
         run: composer lint
 
       - name: Run unit tests
