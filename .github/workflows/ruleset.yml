@@ -51,7 +51,7 @@ jobs:
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
       - name: Configure error reporting
         if: ${{ matrix.PHPCS_BRANCH == 'dev-master' }}
-        run: echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> /etc/php/${{ matrix.PHP_VERSION }}/cli/php.ini
+        run: echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> /etc/php/${{ env.PHP_VERSION }}/cli/php.ini
 
       - name: Setup PHPCS
         run: composer config preferred-install.squizlabs/php_codesniffer auto
