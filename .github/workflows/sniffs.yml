@@ -60,13 +60,13 @@ jobs:
         uses: ChristophWurst/xmllint-action@v1
         with:
           xml-file: ./phpcs.xml.dist.sample
-          xml-schema-file: /vendor/squizlabs/php_codesniffer/phpcs.xsd
+          xml-schema-file: ./vendor/squizlabs/php_codesniffer/phpcs.xsd
 
       - name: Lint rulsests 2
         uses: ChristophWurst/xmllint-action@v1
         with:
           xml-file: ./*/ruleset.xml
-          xml-schema-file: /vendor/squizlabs/php_codesniffer/phpcs.xsd
+          xml-schema-file: ./vendor/squizlabs/php_codesniffer/phpcs.xsd
 
       # @link http://xmlsoft.org/xmllint.html
       # For the build to properly error when validating against a scheme, these each have to be in their own condition.
