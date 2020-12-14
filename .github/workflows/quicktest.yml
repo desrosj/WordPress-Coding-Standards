@@ -1,4 +1,4 @@
-name: Quick Test
+name: Quick Tests
 
 on:
   push:
@@ -12,21 +12,21 @@ env:
 
 jobs:
 
-  sniff:
-    name: Quicktests - PHP ${{ matrix.php }}/PHPCS ${{ matrix.phpcs_branch }}
+  quick-tests:
+    name: PHP ${{ matrix.php }} on PHPCS ${{ matrix.phpcs_branch }}${{ matrix.lint && ' with linting' || '' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php: [ '7.4', '5.4' ]
         phpcs_branch: [ 'dev-master' ]
-        lint: [ 1 ]
+        lint: [ true ]
         include:
           - php: '7.3'
             phpcs_branch: '3.5.0'
-            lint: 0
+            lint: false
           - php: '5.4'
             phpcs_branch: '3.5.0'
-            lint: 0
+            lint: false
 
     env:
       PHP_VERSION: ${{ matrix.php }}
@@ -73,7 +73,7 @@ jobs:
         run: composer install --no-suggest
 
       - name: Lint PHP files against parse errors.
-        if: ${{ env.LINT == 1 }}
+        if: ${{ env.LINT }}
         run: composer lint
 
       - name: Run unit tests
