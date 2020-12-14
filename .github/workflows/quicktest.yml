@@ -17,19 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '7.4', '7.3', '5.4' ]
-        phpcs_branch: [ 'dev-master', '3.5.0' ]
-        lint: [ 0 ]
+        php: [ '7.4', '5.4' ]
+        phpcs_branch: [ 'dev-master' ]
+        lint: [ 1 ]
         include:
-          - php: '7.4'
-            phpcs_branch: 'dev-master'
-            lint: 1
-          - php: '5.4'
-            phpcs_branch: 'dev-master'
-            lint: 1
-        exclude:
           - php: '7.3'
-            phpcs_branch: 'dev-master'
+            phpcs_branch: '3.5.0'
+            lint: 0
+          - php: '5.4'
+            phpcs_branch: '3.5.0'
             lint: 0
 
     env:
@@ -70,6 +66,9 @@ jobs:
           # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
           ini-values: error_reporting=E_ALL & ~E_DEPRECATED
 
+      - name: Test PHP
+        run: php "phpinfo();"
+        
       - name: Install PHPCS
         run: composer require squizlabs/php_codesniffer:"${{ env.PHPCS_BRANCH }}" --no-update --no-suggest --no-scripts
 
