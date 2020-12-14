@@ -100,7 +100,7 @@ jobs:
         if: ${{ matrix.php < 8.0 }}
         run: composer install --no-suggest
 
-      - name: Lint PHP files against parse errors.
+      - name: Lint PHP files against parse errors
         if: ${{ matrix.phpcs_branch == 'dev-master' }}
         run: composer lint
 

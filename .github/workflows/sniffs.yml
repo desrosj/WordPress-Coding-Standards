@@ -24,7 +24,7 @@ jobs:
   # - Validates the composer.json file.
   # - Checks that sniffs have unit tests.
   sniffs:
-    name: Run sniffs
+    name: Run code sniffs
     runs-on: ubuntu-latest
 
     steps:
