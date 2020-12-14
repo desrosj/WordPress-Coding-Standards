@@ -54,7 +54,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         if: ${{ matrix.phpcs_branch == 'dev-master' }}
         with:
-          php-version: ${{ matrix.PHP_VERSION }}
+          php-version: ${{ matrix.php }}
           ini-values: error_reporting = E_ALL & ~E_DEPRECATED
 
       - name: Install PHPCS
