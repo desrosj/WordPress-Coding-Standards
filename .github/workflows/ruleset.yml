@@ -79,6 +79,11 @@ jobs:
       # For the first run, the exit code will be 1 (= all fixable errors fixed).
       # `travis_retry` should then kick in to run the fixer again which should now return 0 (= no fixable errors found).
       # All error codes for the PHPCBF: https://github.com/squizlabs/PHP_CodeSniffer/issues/1270#issuecomment-272768413
-      - name:
+      - name: Test for fixer conflicts (fixes expected)
+        if: ${{ matrix.PHPCS_BRANCH == 'dev-master' }}
+        continue-on-error: true
+        run: $(pwd)/vendor/bin/phpcbf -pq ./WordPress/Tests/ --standard=WordPress --extensions=inc --exclude=Generic.PHP.Syntax --report=summary
+
+      - name: Test for fixer conflicts
         if: ${{ matrix.PHPCS_BRANCH == 'dev-master' }}
         run: $(pwd)/vendor/bin/phpcbf -pq ./WordPress/Tests/ --standard=WordPress --extensions=inc --exclude=Generic.PHP.Syntax --report=summary
