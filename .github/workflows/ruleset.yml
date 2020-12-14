@@ -2,9 +2,6 @@ name: Ruleset checks
 
 on:
   push:
-    branches:
-      - master
-      - develop
   pull_request:
 
 jobs:

@@ -2,9 +2,6 @@ name: Code Sniffs
 
 on:
   push:
-    branches:
-      - master
-      - develop
   pull_request:
 
 env:
