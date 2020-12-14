@@ -64,7 +64,7 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           # On stable PHPCS versions, allow for PHP deprecation notices.
           # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-#          ini-values: error_reporting=E_ALL & ~E_DEPRECATED
+          ini-values: error_reporting=E_ALL & ~E_DEPRECATED
 
       - name: Test PHP
         run: php -r "phpinfo();"
