@@ -57,17 +57,14 @@ jobs:
         with:
           php-version: ${{ env.PHP_VERSION }}
 
+      # On stable PHPCS versions, allow for PHP deprecation notices.
+      # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         if: ${{ env.PHPCS_BRANCH == 'dev-master' }}
         with:
           php-version: ${{ env.PHP_VERSION }}
-          # On stable PHPCS versions, allow for PHP deprecation notices.
-          # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
           ini-values: error_reporting=E_ALL & ~E_DEPRECATED
-
-      - name: Test PHP
-        run: php -r "phpinfo();"
 
       - name: Install PHPCS
         run: composer require squizlabs/php_codesniffer:"${{ env.PHPCS_BRANCH }}" --no-update --no-suggest --no-scripts
@@ -76,7 +73,7 @@ jobs:
         run: composer install --no-suggest
 
       - name: Lint PHP files against parse errors.
-        if: ${{ env.LINT }}
+        if: ${{ env.LINT == 1 }}
         run: composer lint
 
       - name: Run unit tests
