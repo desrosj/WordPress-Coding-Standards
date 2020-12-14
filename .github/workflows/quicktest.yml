@@ -6,10 +6,10 @@ on:
       - master
       - develop
   workflow_run:
-    workflows: [ "Ruleset checks" ]
-    branches-ignore:
-      - master
-      - develop
+    workflows:
+      - Ruleset checks
+    types:
+      - completed
 
 jobs:
   # Performs some quick tests.
@@ -27,6 +27,7 @@ jobs:
   quick-tests:
     name: PHP ${{ matrix.php }} on PHPCS ${{ matrix.phpcs_branch }}${{ matrix.lint && ' with linting' || '' }}
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
         php: [ '7.4', '5.4' ]
