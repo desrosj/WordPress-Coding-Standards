@@ -2,12 +2,9 @@ name: Quick Test
 
 on:
   workflow_run:
-    workflows: "Ruleset checks"
+    workflows: [ "Ruleset checks" ]
     types:
       - completed
-    branches-ignore:
-      - master
-      - develop
 
 jobs:
 
