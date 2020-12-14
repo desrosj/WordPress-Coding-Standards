@@ -5,6 +5,11 @@ on:
     branches-ignore:
       - master
       - develop
+  workflow_run:
+    workflows: [ "Ruleset checks" ]
+    branches-ignore:
+      - master
+      - develop
 
 jobs:
   # Performs some quick tests.
